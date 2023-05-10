@@ -23,5 +23,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [OrderController::class, 'index'])->name('home');
-Route::resource('/orders',[OrderController::class]);
-Route::resource('/products',[ProductController::class]);
+Route::resource('/orders',OrderController::class);
+Route::resource('/products',ProductController::class);

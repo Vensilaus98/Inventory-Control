@@ -3,16 +3,24 @@
 namespace App\Http\Controllers\Web\Order;
 
 use App\Http\Controllers\Controller;
+use App\Models\Web\Order\Order;
 use Illuminate\Http\Request;
+use App\Models\Web\Product\Product;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Order $order,Product $product)
     {
-        //
+        //Get all orders
+        $orders = $order->getAllOrders();
+
+        //Get all products
+        $products = $product->getAllProducts();
+        
+        return view('web.orders.index',compact('orders','products'));
     }
 
     /**
