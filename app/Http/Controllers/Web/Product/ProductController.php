@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers\Web\Product;
 
+use App\Http\Actions\Web\Products\SaveProductAction;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Web\Product\SaveProductRequest;
 use Illuminate\Http\Request;
+use App\Models\Web\Product\Product;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Product $product)
     {
-        //
+        $products = $product->getAllProducts();
+
+        return view('web.products.index',compact('products'));
     }
 
     /**
@@ -26,9 +31,15 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SaveProductRequest $request,SaveProductAction $saveProductAction)
     {
-        //
+        $saveProduct = $saveProductAction->handle($request);
+        if(!$saveProduct)
+        {
+            return redirect()->route('products.index')->with('error', 'Failed to create new product');
+        }
+
+        return redirect()->route('products.index')->with('status', 'Product created successfully');
     }
 
     /**

@@ -8,8 +8,7 @@
                     <div class="card-header">
                         <div class="d-flex align-items-center justify-content-between">
                             Orders
-                            <a class="btn btn-outline-warning" href="#" data-bs-toggle="modal"
-                                data-bs-target="#productModal">Home</a>
+                            <a class="btn btn-outline-warning" href="{{ route('products.index') }}">Products</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -74,16 +73,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex align-items-center justify-content-end">
-                        <a href="#" class="btn btn-primary">Add Product</a>
+                        <a href="#" class="btn btn-outline-primary">Add Product</a>
                     </div>
                     <hr/>
                     <form class="form mt-3" action="{{ route('orders.store') }}" method="post">
                         @csrf
                         <div class="row">
-                            <div x-data="{ show: false }">
-                                <a href="#" @click="show = !show">Show</a>
-                                <h1 x-show="!show">Hello Alpine.js</h1>
-                            </div>
                             <div class="col-md-12 col-lg-12">
                                 <div class="row">
                                     <div class="col-md-3 col-lg-3">
@@ -132,7 +127,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-end mt-3">
-                                    <a href="#" class="btn btn-danger">Remove Product</a>
+                                    <a href="#" class="btn btn-outline-danger">Remove Product</a>
                                 </div>
                             </div>
                         </div>

@@ -9,6 +9,10 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name','product_no'
+    ];
+
     public function getAllProducts(){
         return Product::all();
     }
