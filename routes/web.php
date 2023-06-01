@@ -25,4 +25,5 @@ Auth::routes();
 Route::get('/home', [OrderController::class, 'index'])->name('home');
 Route::resource('/orders',OrderController::class);
 Route::resource('/products',ProductController::class);
-Route::post('/restock',[ProductController::class, 'restock'])->name('products.restock');
+Route::post('/restock',[ProductController::class, 'restock'])->name('restock');
+Route::post('/products/store-restock',[ProductController::class, 'restock'])->name('products.storerestock');

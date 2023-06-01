@@ -50,7 +50,8 @@
                                                 <td>{{ $product->amount }}</td>
                                                 <td>20,000</td>
                                                 @if ($product->quantity < 10)
-                                                    <td><a class="btn btn-outline-danger" href="#" onclick="restockProduct(<?php echo $product->id?>)">Restock</a></td>
+                                                    <td><a class="btn btn-outline-danger" href="#"
+                                                            onclick="restockProduct(<?php echo $product->id; ?>)">Restock</a></td>
                                                 @endif
                                             </tr>
                                         @endforeach
@@ -143,7 +144,7 @@
         aria-labelledby="restockProductModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-                <form class="form mt-3" action="{{ route('products.restock') }}" method="post">
+                <form class="form mt-3" action="{{ route('products.storerestock') }}" method="post">
                     @csrf
                     <div class="modal-header bg-default opacity-50">
                         <h5 class="modal-title" id="productModalLabel">Restock product</h5>
@@ -188,4 +189,28 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        function restockProduct(id) {
+            var product_id = id;
+            //Send ajax request
+            $.ajax({
+                url: '/restock',
+                method: 'POST',
+                data: {},
+                dataType: 'JSON',
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(response) {
+                    console.log(response)
+                },
+                error: function(response) {
+                    console.log(response)
+                }
+            });
+        }
+    </script>
 @endsection
