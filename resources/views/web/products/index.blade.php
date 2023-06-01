@@ -194,16 +194,14 @@
 @section('script')
     <script type="text/javascript">
         function restockProduct(id) {
+
             var product_id = id;
+
             //Send ajax request
             $.ajax({
-                url: '/restock',
-                method: 'POST',
-                data: {},
-                dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
+                // url: "products/restock/"+id,
+                url: "{{ route('products.restock') }}/"+id,
+                method: 'GET',
                 success: function(response) {
                     console.log(response)
                 },

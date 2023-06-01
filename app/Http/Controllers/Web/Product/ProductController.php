@@ -74,10 +74,13 @@ class ProductController extends Controller
         //
     }
 
-    public function restock($id)
+    public function restock(Request $request)
     {
+
+        $data = $request->all();
+        echo json_encode($data);exit;
         //Get product
-        $product = Product::findOrFail($id);
+        $product = Product::findOrFail($data);
         return response()->json($product);
     }
 }
