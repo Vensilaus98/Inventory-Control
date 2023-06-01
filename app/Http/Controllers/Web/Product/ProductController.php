@@ -73,4 +73,11 @@ class ProductController extends Controller
     {
         //
     }
+
+    public function restock($id)
+    {
+        //Get product
+        $product = Product::findOrFail($id);
+        return response()->json($product);
+    }
 }

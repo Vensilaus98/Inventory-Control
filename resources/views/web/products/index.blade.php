@@ -34,6 +34,7 @@
                                 <table class="table table-bordered table-responsive mt-4">
                                     <thead>
                                         <tr>
+                                            <th scope="col">Product No</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Quantity</th>
                                             <th scope="col">Price</th>
@@ -43,11 +44,14 @@
                                     <tbody>
                                         @foreach ($products as $product)
                                             <tr>
-                                                <td>Prdocut A</td>
-                                                <td>20</td>
+                                                <td>{{ $product->product_no }}</td>
+                                                <td>{{ $product->name }}</td>
+                                                <td>{{ $product->quantity }}</td>
+                                                <td>{{ $product->amount }}</td>
                                                 <td>20,000</td>
-                                                <td><a class="btn btn-outline-danger" href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#orderModal">Restock</a></td>
+                                                @if ($product->quantity < 10)
+                                                    <td><a class="btn btn-outline-danger" href="#" onclick="restockProduct(<?php echo $product->id?>)">Restock</a></td>
+                                                @endif
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -128,6 +132,57 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Restock modal dialog --}}
+    <div class="modal fade" id="restockProductModal" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="restockProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form class="form mt-3" action="{{ route('products.restock') }}" method="post">
+                    @csrf
+                    <div class="modal-header bg-default opacity-50">
+                        <h5 class="modal-title" id="productModalLabel">Restock product</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                <div class="row">
+                                    <div class="col-md-3 col-lg-3">
+                                        <div class="form-group">
+                                            <div class="col-md-12 col-lg-12">
+                                                <label for="product">Quantity</label>
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 mt-1">
+                                                <input class="form-control" min="1" type="number"
+                                                    name="quantity" id="quantity" placeholder="Enter quantity">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-lg-3">
+                                        <div class="form-group">
+                                            <div class="col-md-12 col-lg-12">
+                                                <label for="amount">Expiry date</label>
+                                            </div>
+                                            <div class="col-md-12 col-lg-12 mt-1">
+                                                <input class="form-control" type="date" name="expiry" id="expiry"
+                                                    placeholder="Enter expiry date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </form>
             </div>
