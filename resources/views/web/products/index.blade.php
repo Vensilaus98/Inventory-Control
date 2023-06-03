@@ -142,7 +142,7 @@
     {{-- Restock modal dialog --}}
     <div class="modal fade" id="restockProductModal" data-bs-backdrop="static" tabindex="-1"
         aria-labelledby="restockProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-md">
             <div class="modal-content">
                 <form class="form mt-3" action="{{ route('products.storerestock') }}" method="post">
                     @csrf
@@ -154,7 +154,7 @@
                         <div class="row">
                             <div class="col-md-12 col-lg-12">
                                 <div class="row">
-                                    <div class="col-md-3 col-lg-3">
+                                    <div class="col-md-6 col-lg-6">
                                         <div class="form-group">
                                             <div class="col-md-12 col-lg-12">
                                                 <label for="product">Quantity</label>
@@ -165,7 +165,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-3">
+                                    <div class="col-md-6 col-lg-6">
                                         <div class="form-group">
                                             <div class="col-md-12 col-lg-12">
                                                 <label for="amount">Expiry date</label>
@@ -179,7 +179,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        <input type="hidden" name="product_id">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -200,10 +200,14 @@
             //Send ajax request
             $.ajax({
                 // url: "products/restock/"+id,
-                url: "{{ route('products.restock') }}/"+id,
+                url: "{{ route('products.restock') }}",
+                data: {
+                    id:id
+                },
                 method: 'GET',
                 success: function(response) {
-                    console.log(response)
+                    $("input[name=product_id]").val(response['id'])
+                    $("#restockProductModal").modal('show');
                 },
                 error: function(response) {
                     console.log(response)
