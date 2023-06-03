@@ -143,6 +143,16 @@
     <div class="modal fade" id="restockProductModal" data-bs-backdrop="static" tabindex="-1"
         aria-labelledby="restockProductModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-md">
+            @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('error') }}
+                </div>
+            @endif
             <div class="modal-content">
                 <form class="form mt-3" action="{{ route('products.storerestock') }}" method="post">
                     @csrf
@@ -202,7 +212,7 @@
                 // url: "products/restock/"+id,
                 url: "{{ route('products.restock') }}",
                 data: {
-                    id:id
+                    id: id
                 },
                 method: 'GET',
                 success: function(response) {

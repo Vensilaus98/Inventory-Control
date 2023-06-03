@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Web\Product;
 
 use App\Http\Actions\Web\Products\SaveProductAction;
+use App\Http\Actions\Web\Products\RestockProductAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Web\Product\SaveProductRequest;
+use App\Http\Requests\Web\Product\RestockProductRequest;
 use Illuminate\Http\Request;
 use App\Models\Web\Product\Product;
 
@@ -83,5 +85,17 @@ class ProductController extends Controller
         $product = $product->getSingleProduct($data['id']);
 
         return response()->json($product);
+    }
+
+    public function storeRestock(RestockProductRequest $request, RestockProductAction $productAction){
+        
+        //Restock product
+        $restockProduct = $productAction->handle($request);
+        if(!$restockProduct)
+        {
+            return redirect()->route('products.index')->with('error', 'Failed to restock product');
+        }
+
+        return redirect()->route('products.index')->with('status', 'Product restocked successfully');
     }
 }
