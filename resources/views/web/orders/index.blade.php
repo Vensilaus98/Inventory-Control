@@ -73,7 +73,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex align-items-center justify-content-end">
-                        <a href="#" class="btn btn-outline-primary">Add Product</a>
+                        <a href="#" class="btn btn-outline-primary" onclick="addProduct()">Add Product</a>
                     </div>
                     <hr/>
                     <form class="form mt-3" action="{{ route('orders.store') }}" method="post">
@@ -127,7 +127,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center justify-content-end mt-3">
-                                    <a href="#" class="btn btn-outline-danger">Remove Product</a>
+                                    <a href="#" class="btn btn-outline-danger" onclick="removeProduct()">Remove Product</a>
                                 </div>
                             </div>
                         </div>
@@ -140,4 +140,22 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('script')
+<script type="text/javascript">
+
+    //Add new product row
+
+    function addProduct(){
+        var rowCount = 1;
+    }
+
+    //Remove product row
+
+    function removeProduct(){
+        
+    }
+
+</script>
 @endsection
