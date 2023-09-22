@@ -19,7 +19,7 @@ class ProductController extends Controller
     {
         $products = $product->getAllProducts();
 
-        return view('web.products.index',compact('products'));
+        return view('web.products.index', compact('products'));
     }
 
     /**
@@ -33,11 +33,10 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(SaveProductRequest $request,SaveProductAction $saveProductAction)
+    public function store(SaveProductRequest $request, SaveProductAction $saveProductAction)
     {
         $saveProduct = $saveProductAction->handle($request);
-        if(!$saveProduct)
-        {
+        if (!$saveProduct) {
             return redirect()->route('products.index')->with('error', 'Failed to create new product');
         }
 
@@ -76,26 +75,50 @@ class ProductController extends Controller
         //
     }
 
-    public function restock(Request $request,Product $product)
+    public function restock(Request $request, Product $product)
     {
 
         $data = $request->all();
-        
+
         //Get product
         $product = $product->getSingleProduct($data['id']);
 
         return response()->json($product);
     }
 
-    public function storeRestock(RestockProductRequest $request, RestockProductAction $productAction){
-        
+    public function storeRestock(RestockProductRequest $request, RestockProductAction $productAction)
+    {
+
         //Restock product
         $restockProduct = $productAction->handle($request);
-        if(!$restockProduct)
-        {
+        if (!$restockProduct) {
             return redirect()->route('products.index')->with('error', 'Failed to restock product');
         }
 
         return redirect()->route('products.index')->with('status', 'Product restocked successfully');
+    }
+
+    public function getData(Product $product,string $id)
+    {
+        //get product
+        $productData = Product::find($id);
+
+        //get prices
+        $price = $product->price($productData->id);
+
+        //stocks
+        $stocks = $product->stocks($productData->id);
+
+        $data = [
+            'product' => $productData,
+            'price' => $price,
+            'stocks' => $stocks
+        ];
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Product fetched successfully.',
+            'data' => $data
+        ]);
     }
 }

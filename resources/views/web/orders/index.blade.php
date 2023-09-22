@@ -73,62 +73,59 @@
                 </div>
                 <div class="modal-body">
                     <div class="d-flex align-items-center justify-content-end">
-                        <a href="#" class="btn btn-outline-primary" onclick="addProduct()">Add Product</a>
+                        <a href="#" class="btn btn-outline-primary btn-sm addProduct">Add Product</a>
                     </div>
-                    <hr/>
+                    <hr />
                     <form class="form mt-3" action="{{ route('orders.store') }}" method="post">
                         @csrf
                         <div class="row">
                             <div class="col-md-12 col-lg-12">
-                                <div class="row">
-                                    <div class="col-md-3 col-lg-3">
-                                        <div class="form-group">
-                                            <div class="col-md-12 col-lg-12">
-                                                <label for="product">Product</label>
-                                            </div>
-                                            <div class="col-md-12 col-lg-12 mt-1">
-                                                <select class="form-control" name="product_id" id="product_id">
-                                                    <option value="">Select product</option>
-                                                    <option value="1">Product 1</option>
-                                                    <option value="2">Product 2</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3">
-                                        <div class="form-group">
-                                            <div class="col-md-12 col-lg-12">
-                                                <label for="product">Quantity</label>
-                                            </div>
-                                            <div class="col-md-12 col-lg-12 mt-1">
-                                                <input class="form-control" min="1" type="number" name="quantity" id="quantity" placeholder="Enter quantity">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3">
-                                        <div class="form-group">
-                                            <div class="col-md-12 col-lg-12">
-                                                <label for="price">Price</label>
-                                            </div>
-                                            <div class="col-md-12 col-lg-12 mt-1">
-                                                <input class="form-control" min="1" type="number" name="price" id="price" placeholder="Enter price" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3 col-lg-3">
-                                        <div class="form-group">
-                                            <div class="col-md-12 col-lg-12">
-                                                <label for="amount">Amount</label>
-                                            </div>
-                                            <div class="col-md-12 col-lg-12 mt-1">
-                                                <input class="form-control" min="1" type="number" name="amount" id="amount" placeholder="Enter amount">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-end mt-3">
-                                    <a href="#" class="btn btn-outline-danger" onclick="removeProduct()">Remove Product</a>
-                                </div>
+                                <table class="table table-bordered" id="orderProductsTable">
+                                    <thead>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="col-md-12 col-lg-12 mt-1">
+                                                    <select class="form-control" name="product_id" id="product_id">
+                                                        <option value="">Select product</option>
+                                                        @foreach ($products as $product)
+                                                            <option value="{{ $product->id }}">{{ $product->name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-md-12 col-lg-12 mt-1">
+                                                    <input class="form-control" min="1" type="number"
+                                                        name="quantity" id="quantity" placeholder="Enter quantity">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-md-12 col-lg-12 mt-1">
+                                                    <input class="form-control" min="1" type="number" name="price"
+                                                        id="price" placeholder="Enter price" disabled>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="col-md-12 col-lg-12 mt-1">
+                                                    <input class="form-control" min="1" type="number" name="amount"
+                                                        id="amount" placeholder="Enter amount">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <a href="#"
+                                                    class="btn btn-outline-danger btn-sm removeProduct">Remove</a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </form>
@@ -141,21 +138,56 @@
         </div>
     </div>
 @endsection
-
 @section('script')
-<script type="text/javascript">
+    <script>
+        $(document).ready(function() {
 
-    //Add new product row
+            //check changed product
+            $('#product_id').change(function() {
 
-    function addProduct(){
-        var rowCount = 1;
-    }
+                let product_id = $('#product_id').val();
 
-    //Remove product row
+                var urlB = "{{ route('products.getData', ':id') }}";
+                url = urlB.replace(':id', product_id);
 
-    function removeProduct(){
-        
-    }
+                //make ajax request for product details
+                $.ajax({
+                    url: url,
+                    method: 'get',
+                    data: {
+                        product_id: product_id
+                    },
+                    success: function(result) {
+                        if (result.status === true) {
 
-</script>
+                        } else {
+                            console.log(result.data);
+                        }
+                    },
+                    error: function(error) {
+
+                    }
+                });
+            });
+
+            let i = 0;
+
+            //add row buttons
+            jQuery('.addProduct').click(function() {
+                i--;
+                jQuery('#orderProductsTable').append('<tr id="row' + i +
+                    '"><td><input type="text" id="bus_class_' + i +
+                    '" name="bus_class[]" placeholder="Enter class name" class="form-control"><small class="text-danger" id="error_bus_class' +
+                    i + '"></small></td><td><a href="#" id="' + i +
+                    '" name="remove" class="action-icon text-danger removeClassRow"> <i class="uil uil-trash"></i> Remove</a></td></tr>'
+                );
+            });
+
+            //remove row buttons
+            jQuery(document).on('click', '.removeProduct', function() {
+                let button_id = jQuery(this).attr("id");
+                jQuery('#row' + button_id + '').remove();
+            });
+        });
+    </script>
 @endsection
