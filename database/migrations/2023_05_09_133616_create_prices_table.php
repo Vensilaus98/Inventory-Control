@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->double('amount');
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
     }
